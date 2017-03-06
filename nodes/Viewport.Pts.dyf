@@ -1,0 +1,63 @@
+<Workspace Version="0.9.0.3067" X="52.8" Y="184.8" zoom="1" Name="Viewport.Pts" Description="Gets the min and max points of a viewport" ID="08f475d2-062e-4252-86c2-4acc6d59c444" Category="Sasaki-Dependency.Hollandaise">
+  <NamespaceResolutionMap>
+    <ClassMap partialName="List.map" resolvedName="DSCore.List" assemblyName="DSCoreNodes.dll" />
+  </NamespaceResolutionMap>
+  <Elements>
+    <Dynamo.Nodes.CodeBlockNodeModel guid="784f5197-e71b-4fc8-90ec-108c89df3bc4" type="Dynamo.Nodes.CodeBlockNodeModel" nickname="Code Block" x="427.303698343621" y="3.37821553510821" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" CodeText="x[0];&#xA;x[1];" ShouldFocus="false" />
+    <PythonNodeModels.PythonNode guid="613e0f39-31c4-4614-aee0-ec51770548a9" type="PythonNodeModels.PythonNode" nickname="Python Script" x="250" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" inputcount="1">
+      <Script># modified from a node in archi-lab by
+# @arch_laboratory, http://archi-lab.net
+
+import clr
+clr.AddReference('ProtoGeometry')
+from Autodesk.DesignScript.Geometry import *
+
+# Import Element wrapper extension methods
+clr.AddReference("RevitNodes")
+import Revit
+clr.ImportExtensions(Revit.Elements)
+
+# Import geometry conversion extension methods
+clr.ImportExtensions(Revit.GeometryConversion)
+
+
+#The inputs to this node will be stored as a list in the IN variables.
+dataEnteringNode = IN
+pts=[]
+v = UnwrapElement(IN[0])
+outline = v.GetBoxOutline()
+minpt=outline.MinimumPoint.ToPoint()
+maxpt=outline.MaximumPoint.ToPoint()
+
+pts.append(minpt)
+pts.append(maxpt)
+#Assign your output to the OUT variable.
+OUT = pts
+
+
+
+</Script>
+    </PythonNodeModels.PythonNode>
+    <Dynamo.Nodes.Symbol guid="77a270af-5f80-4a01-ab61-1b4c5fb02b43" type="Dynamo.Nodes.Symbol" nickname="Input" x="0" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True">
+      <Symbol value="viewport" />
+    </Dynamo.Nodes.Symbol>
+    <Dynamo.Nodes.Output guid="af978479-5769-4938-9ed2-cdd464673bca" type="Dynamo.Nodes.Output" nickname="Output" x="606.303698343621" y="0" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False">
+      <Symbol value="MinPt" />
+    </Dynamo.Nodes.Output>
+    <Dynamo.Nodes.Output guid="1c205cf9-bcc7-4a20-aa5b-1e31d829224e" type="Dynamo.Nodes.Output" nickname="Output" x="606.303698343621" y="150" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False">
+      <Symbol value="MaxPt" />
+    </Dynamo.Nodes.Output>
+  </Elements>
+  <Connectors>
+    <Dynamo.Models.ConnectorModel start="784f5197-e71b-4fc8-90ec-108c89df3bc4" start_index="0" end="af978479-5769-4938-9ed2-cdd464673bca" end_index="0" portType="0" />
+    <Dynamo.Models.ConnectorModel start="784f5197-e71b-4fc8-90ec-108c89df3bc4" start_index="1" end="1c205cf9-bcc7-4a20-aa5b-1e31d829224e" end_index="0" portType="0" />
+    <Dynamo.Models.ConnectorModel start="613e0f39-31c4-4614-aee0-ec51770548a9" start_index="0" end="784f5197-e71b-4fc8-90ec-108c89df3bc4" end_index="0" portType="0" />
+    <Dynamo.Models.ConnectorModel start="77a270af-5f80-4a01-ab61-1b4c5fb02b43" start_index="0" end="613e0f39-31c4-4614-aee0-ec51770548a9" end_index="0" portType="0" />
+  </Connectors>
+  <Notes />
+  <Annotations />
+  <Presets />
+  <Cameras>
+    <Camera Name="Background Preview" eyeX="-17" eyeY="24" eyeZ="50" lookX="12" lookY="-13" lookZ="-58" upX="0" upY="1" upZ="0" />
+  </Cameras>
+</Workspace>
